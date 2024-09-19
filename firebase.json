@@ -9,12 +9,8 @@
     ],
     "rewrites": [
       {
-        "source": "/api-sendly/**",
-        "function":
-        {
-          "functionId": "api-sendly",
-          "region": "asia-southeast1"
-        }
+        "source": "**",
+        "destination": "/index.html"
       }
     ]
   }

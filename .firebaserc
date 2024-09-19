@@ -1,6 +1,7 @@
 {
   "projects": {
-    "default": "meowapps-academy"
+    "default": "meowapps-academy",
+    "sendly-test": "meowapps-academy"
   },
   "targets": {
     "meowapps-academy": {
