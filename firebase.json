@@ -1,0 +1,21 @@
+{
+  "hosting": {
+    "target": "sendly",
+    "public": "hosting/dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/api-sendly/**",
+        "function":
+        {
+          "functionId": "api-sendly",
+          "region": "asia-southeast1"
+        }
+      }
+    ]
+  }
+}

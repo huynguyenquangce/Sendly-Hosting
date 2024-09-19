@@ -1,0 +1,8 @@
+.home-page-title {
+    text-align: center;
+}
+
+#root {
+    width: 100% !important;
+    height: 100vh !important;
+}

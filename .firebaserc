@@ -1,0 +1,16 @@
+{
+  "projects": {
+    "default": "meowapps-academy"
+  },
+  "targets": {
+    "meowapps-academy": {
+      "hosting": {
+        "sendly": [
+          "sendly-test"
+        ]
+      }
+    }
+  },
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
+}
