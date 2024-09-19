@@ -57,7 +57,7 @@ function ResponsiveAppBar() {
               textDecoration: "none",
             }}
           >
-            LOGO
+            SENDLY
           </Typography>
 
           {/* Mobile Menu */}
@@ -107,7 +107,7 @@ function ResponsiveAppBar() {
               textDecoration: "none",
             }}
           >
-            LOGO
+            SENDLY
           </Typography>
 
           {/* Desktop Menu */}

@@ -1,6 +1,6 @@
 import "./App.css";
 import Dashboard from "./components/Dashboard/Dashboard";
-import ResponsiveAppBar from "./components/Homepage/HomePage";
+import ResponsiveAppBar from "./components/Navigation/Navigation";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Admin from "./components/Admin/Admin";
 import Section from "./components/Section/Section";
