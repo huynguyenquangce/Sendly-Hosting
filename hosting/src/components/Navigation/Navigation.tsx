@@ -9,20 +9,22 @@ import {
   Button,
   MenuItem,
   Container,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { Menu as MenuIcon, Adb as AdbIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-
-const pages = [
-  { label: "Dashboard", path: "/dashboard" },
-  { label: "Staff and Permissions", path: "/admin" },
-  { label: "Theme category", path: "/theme_category" },
-  { label: "Theme manage", path: "/theme_manage" },
-  { label: "Sections", path: "/section" },
-  { label: "Login", path: "/login" },
-];
-
+import { useTranslation } from "react-i18next";
+import { changeLanguage } from "../../redux/slice/app/languageSlice";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../../redux/store";
 const ResponsiveAppBar = () => {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const currentLanguageRedux = useSelector(
+    (state: RootState) => state.language.currentLanguage
+  );
   const navigate = useNavigate();
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
 
@@ -39,6 +41,23 @@ const ResponsiveAppBar = () => {
     handleMenuClose();
   };
 
+  const handleChangeLanguage = (lang: string) => {
+    dispatch(changeLanguage(lang));
+  };
+
+  const handleChangeSelect = async (event: SelectChangeEvent) => {
+    const currentLanguage = event.target.value;
+    handleChangeLanguage(currentLanguage);
+  };
+
+  const pages = [
+    { label: t("home.dashboard"), path: "/dashboard" },
+    { label: t("home.staff_and_permissions"), path: "/admin" },
+    { label: t("home.theme_category"), path: "/theme_category" },
+    { label: t("home.theme_manage"), path: "/theme_manage" },
+    { label: t("home.sections"), path: "/section" },
+    { label: t("home.login"), path: "/login" },
+  ];
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -124,10 +143,19 @@ const ResponsiveAppBar = () => {
             ))}
           </Box>
           <Box sx={{ flexGrow: 0 }}>
-            <select>
-              <option value="en">English</option>
-              <option value="vi">Vietnamese</option>
-            </select>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Language</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={currentLanguageRedux}
+                label="Language"
+                onChange={handleChangeSelect}
+              >
+                <MenuItem value="vi">Vietnamese</MenuItem>
+                <MenuItem value="en">English</MenuItem>
+              </Select>
+            </FormControl>
           </Box>
         </Toolbar>
       </Container>

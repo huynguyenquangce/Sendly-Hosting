@@ -1,0 +1,10 @@
+{
+  "home": {
+    "dashboard": "Bảng điều khiển",
+    "staff_and_permissions": "Nhân viên và Quyền hạn",
+    "theme_category": "Danh mục theme",
+    "theme_manage": "Quản lý theme",
+    "sections": "Thành phần",
+    "login": "Đăng nhập"
+  }
+}

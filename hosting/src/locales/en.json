@@ -1,0 +1,10 @@
+{
+  "home": {
+    "dashboard": "Dashboard",
+    "staff_and_permissions": "Staff and Permissions",
+    "theme_category": "Theme category",
+    "theme_manage": "Theme manage",
+    "sections": "Sections",
+    "login": "Login"
+  }
+}
