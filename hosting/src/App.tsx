@@ -6,6 +6,7 @@ import Admin from "./components/Admin/Admin";
 import Section from "./components/Section/Section";
 import Theme_Manage from "./components/Theme_Manage/Theme_Manage";
 import Theme_Category from "./components/Theme_Category/Theme_Categoy";
+import Login from "./components/Login/Login";
 function App() {
   return (
     <>
@@ -18,6 +19,7 @@ function App() {
             <Route path="/admin" element={<Admin />}></Route>1`1`
             <Route path="/section" element={<Section />}></Route>
             <Route path="/theme_category" element={<Theme_Category />}></Route>
+            <Route path="/login" element={<Login />}></Route>
           </Routes>
         </BrowserRouter>
       </div>

@@ -1,4 +1,4 @@
-import React, { useState, MouseEvent } from "react";
+import { useState, MouseEvent } from "react";
 import {
   AppBar,
   Box,
@@ -19,9 +19,10 @@ const pages = [
   { label: "Theme category", path: "/theme_category" },
   { label: "Theme manage", path: "/theme_manage" },
   { label: "Sections", path: "/section" },
+  { label: "Login", path: "/login" },
 ];
 
-function ResponsiveAppBar() {
+const ResponsiveAppBar = () => {
   const navigate = useNavigate();
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
 
@@ -122,10 +123,16 @@ function ResponsiveAppBar() {
               </Button>
             ))}
           </Box>
+          <Box sx={{ flexGrow: 0 }}>
+            <select>
+              <option value="en">English</option>
+              <option value="vi">Vietnamese</option>
+            </select>
+          </Box>
         </Toolbar>
       </Container>
     </AppBar>
   );
-}
+};
 
-export default React.memo(ResponsiveAppBar);
+export default ResponsiveAppBar;
