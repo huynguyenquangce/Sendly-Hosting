@@ -3,11 +3,6 @@
     "default": "sendly-email-template-builder",
     "sendly-test": "sendly-email-template-builder"
   },
-  "targets": {
-    "sendly-email-template-builder": {
-      "hosting": {}
-    }
-  },
   "etags": {},
   "dataconnectEmulatorConfig": {}
 }
