@@ -1,1 +1,1 @@
-Hosting Deploy: https://sendly-test.web.app/
+Hosting Deploy: https://sendly-email-template-builder.web.app/

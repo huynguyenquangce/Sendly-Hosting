@@ -1,15 +1,11 @@
 {
   "projects": {
-    "default": "meowapps-academy",
-    "sendly-test": "meowapps-academy"
+    "default": "sendly-email-template-builder",
+    "sendly-test": "sendly-email-template-builder"
   },
   "targets": {
-    "meowapps-academy": {
-      "hosting": {
-        "sendly": [
-          "sendly-test"
-        ]
-      }
+    "sendly-email-template-builder": {
+      "hosting": {}
     }
   },
   "etags": {},

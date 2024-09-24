@@ -1,7 +1,7 @@
 {
   "hosting": {
     "target": "sendly",
-    "public": "hosting/dist",
+    "public": "public",
     "ignore": [
       "firebase.json",
       "**/.*",
