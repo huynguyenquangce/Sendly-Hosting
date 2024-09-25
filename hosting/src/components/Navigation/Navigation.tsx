@@ -23,7 +23,7 @@ const ResponsiveAppBar = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const currentLanguageRedux = useSelector(
-    (state: RootState) => state.language.currentLanguage
+    (state: RootState) => state.app.language.currentLanguage
   );
   const navigate = useNavigate();
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);

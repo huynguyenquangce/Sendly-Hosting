@@ -1,8 +1,5 @@
 {
   "projects": {
-    "default": "sendly-email-template-builder",
-    "sendly-test": "sendly-email-template-builder"
-  },
-  "etags": {},
-  "dataconnectEmulatorConfig": {}
-}
+    "default": "sendly-email-template-builder"
+  }
+}  
