@@ -11,7 +11,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const onButtonClick = async () => {
     const loginObject = { email: email, password: password };
-    await dispatch(LoginUser(loginObject));
+    const response = await dispatch(LoginUser(loginObject));
+    console.log(response, "check response");
     setPassword("");
     setEmail("");
     navigate("/dashboard");

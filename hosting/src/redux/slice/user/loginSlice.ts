@@ -1,20 +1,24 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-// import axiosConfig from "../../../config/axiosConfig";
-import axios from "axios";
+import axiosConfig from "../../../config/axiosConfig";
+// import axios from "axios";
 interface LoginState {
-  password: string;
   loading: boolean;
   error: boolean;
   errorMessage: string | null;
   isLoggined: boolean;
+  accessToken: string | null;
+  refreshToken: string | null;
+  userId: string | null;
 }
 
 const initialState: LoginState = {
-  password: "",
   loading: false,
   error: false,
   errorMessage: null,
   isLoggined: false,
+  accessToken: "",
+  refreshToken: "",
+  userId: "",
 };
 
 export const LoginUser = createAsyncThunk(
@@ -24,11 +28,7 @@ export const LoginUser = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      // const response = await axiosConfig.post("/auth/sign-in", credentials);
-      const response = await axios.post(
-        "https://asia-southeast1-sendly-email-template-builder.cloudfunctions.net/api/api/auth/sign-in",
-        credentials
-      );
+      const response = await axiosConfig.post("/auth/sign-in", credentials);
       return response;
     } catch (error: any) {
       return rejectWithValue(
@@ -43,11 +43,14 @@ const loginSlice = createSlice({
   initialState,
   reducers: {
     resetLogin: (state) => {
-      state.password = "";
       state.loading = false;
       state.error = false;
       state.errorMessage = null;
       state.isLoggined = false;
+    },
+    updateAccessToken: (state, action) => {
+      state.accessToken = action.payload;
+      state.isLoggined = true;
     },
   },
   extraReducers: (builder) => {
@@ -61,6 +64,9 @@ const loginSlice = createSlice({
       state.loading = false;
       state.error = false;
       state.isLoggined = true;
+      state.accessToken = action.payload.data.access_token;
+      state.refreshToken = action.payload.data.refresh_token;
+      state.userId = action.payload.data.user.userID;
     });
 
     builder.addCase(LoginUser.rejected, (state, action) => {
@@ -70,5 +76,5 @@ const loginSlice = createSlice({
     });
   },
 });
-export const { resetLogin } = loginSlice.actions;
+export const { resetLogin, updateAccessToken } = loginSlice.actions;
 export default loginSlice.reducer;

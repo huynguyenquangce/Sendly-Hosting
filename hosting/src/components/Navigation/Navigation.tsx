@@ -39,8 +39,8 @@ const ResponsiveAppBar = () => {
 
   const handleNavigation = async (path: string) => {
     if (path === "/logout") {
-      localStorage.clear();
-      dispatch(resetLogin());
+      await localStorage.clear();
+      await dispatch(resetLogin());
       navigate("/login");
     } else {
       navigate(path);

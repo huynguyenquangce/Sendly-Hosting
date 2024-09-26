@@ -1,6 +1,7 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-
+import axiosConfig from "../../config/axiosConfig";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 interface ProfileData {
   id: string;
   name: string;
@@ -8,67 +9,51 @@ interface ProfileData {
 }
 
 const Section = () => {
-  // State to hold the API response with appropriate type
-  const [profileData, setProfileData] = useState<ProfileData | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const getAccessTokenFromCookies = (): string | null => {
-    const cookies = document.cookie.split("; ");
-    for (let cookie of cookies) {
-      const [name, value] = cookie.split("=");
-      if (name === "access_token") {
-        return value;
-      }
-    }
-    return null;
-  };
+  // Use useSelector at the top level of the component
+  const accessToken = useSelector(
+    (state: RootState) => state.user.login.accessToken
+  );
+  const refreshToken = useSelector(
+    (state: RootState) => state.user.login.refreshToken
+  );
+  const userId = useSelector((state: RootState) => state.user.login.userId);
 
   const CallAPI = async () => {
+    // console.log(accessToken, "check access token");
     try {
-      const accessToken = getAccessTokenFromCookies();
-      // , {
+      // const response = await axiosConfig.get<ProfileData>("/staffs", {
       //   headers: {
       //     Authorization: `Bearer ${accessToken}`,
       //     "Content-Type": "application/json",
       //   },
+      // });
+      // if (response.status == 200) {
+      //   console.log("hello console", response.data);
       // }
-      const response = await axios.get<ProfileData>(
-        "https://asia-southeast1-sendly-email-template-builder.cloudfunctions.net/api/api/staffs/profile"
-      );
 
-      setProfileData(response.data);
+      console.log("check userid", userId);
+      const newToken = await axiosConfig.get<string>(`auth/refresh/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${refreshToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(newToken, "check newToken");
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        setError(error.message);
-      } else {
-        setError("An unexpected error occurred");
-      }
-    } finally {
-      setLoading(false);
+      console.log(error);
     }
   };
 
   useEffect(() => {
-    CallAPI();
-  }, []);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+    // Call API only if accessToken is available
+    if (accessToken) {
+      CallAPI();
+    }
+  }, [accessToken]); // Add accessToken as a dependency
 
   return (
     <div>
       <h1>Profile Data</h1>
-      {profileData ? (
-        <pre>{JSON.stringify(profileData, null, 2)}</pre>
-      ) : (
-        <div>No profile data available</div>
-      )}
     </div>
   );
 };
