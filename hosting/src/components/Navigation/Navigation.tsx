@@ -17,6 +17,7 @@ import { Menu as MenuIcon, Adb as AdbIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { changeLanguage } from "../../redux/slice/app/languageSlice";
+import { resetLogin } from "../../redux/slice/user/loginSlice";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../redux/store";
 const ResponsiveAppBar = () => {
@@ -36,9 +37,15 @@ const ResponsiveAppBar = () => {
     setMenuAnchor(null);
   };
 
-  const handleNavigation = (path: string) => {
-    navigate(path);
-    handleMenuClose();
+  const handleNavigation = async (path: string) => {
+    if (path === "/logout") {
+      localStorage.clear();
+      dispatch(resetLogin());
+      navigate("/login");
+    } else {
+      navigate(path);
+      handleMenuClose();
+    }
   };
 
   const handleChangeLanguage = (lang: string) => {
@@ -56,7 +63,7 @@ const ResponsiveAppBar = () => {
     { label: t("home.theme_category"), path: "/theme_category" },
     { label: t("home.theme_manage"), path: "/theme_manage" },
     { label: t("home.sections"), path: "/section" },
-    { label: t("home.login"), path: "/login" },
+    { label: t("home.logout"), path: "/logout" },
   ];
   return (
     <AppBar position="static">

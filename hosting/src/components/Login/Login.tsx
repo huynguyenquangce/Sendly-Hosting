@@ -3,16 +3,18 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
 import { LoginUser } from "../../redux/slice/user/loginSlice";
 import "./Login.css";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const onButtonClick = async () => {
     const loginObject = { email: email, password: password };
-    const response = await dispatch(LoginUser(loginObject));
+    await dispatch(LoginUser(loginObject));
     setPassword("");
     setEmail("");
-    console.log(response.payload);
+    navigate("/dashboard");
   };
 
   return (

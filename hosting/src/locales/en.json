@@ -5,6 +5,7 @@
     "theme_category": "Theme category",
     "theme_manage": "Theme manage",
     "sections": "Sections",
-    "login": "Login"
+    "login": "Login",
+    "logout": "Logout"
   }
 }

@@ -4,6 +4,11 @@
       "site": "sendly-email-template-builder",
       "public": "public",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "emulators": {
+        "hosting": {
+          "port": 5000
+        }
+      },
       "rewrites": [
         {
           "source": "/api/**",
