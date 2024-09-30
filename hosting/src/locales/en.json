@@ -7,5 +7,25 @@
     "sections": "Sections",
     "login": "Login",
     "logout": "Logout"
+  },
+  "dashboard_page":
+  {
+    "main-title": "Dashboard"
+  },
+  "staff_page":
+  {
+    "main-title": "Admin Page"
+  },
+  "theme_category_page":
+  {
+    "main-title": "Theme Manage Page"
+  },
+  "theme_manage_page":
+  {
+    "main-title": "Theme Page"
+  },
+  "section_page":
+  {
+    "main-title": "Profile Data"
   }
 }

@@ -7,5 +7,25 @@
     "sections": "Thành phần",
     "login": "Đăng nhập",
     "logout": "Đăng xuất"
+  },
+  "dashboard_page":
+  {
+    "main-title": "Bảng điều khiển"
+  },
+  "staff_page":
+  {
+    "main-title": "Trang dành cho admin"
+  },
+  "theme_category_page":
+  {
+    "main-title": "Trang quản lý category"
+  },
+  "theme_manage_page":
+  {
+    "main-title": "Trang quản lý theme"
+  },
+  "section_page":
+  {
+    "main-title": "Trang section"
   }
 }

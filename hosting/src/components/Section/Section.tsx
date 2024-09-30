@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import axiosConfig from "../../config/axiosConfig";
-
+import { useTranslation } from "react-i18next";
 const Section = () => {
+  const { t } = useTranslation();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -15,7 +16,7 @@ const Section = () => {
   }, []);
   return (
     <div>
-      <h1>Profile Data</h1>
+      <h1>{t("section_page.main-title")}</h1>
     </div>
   );
 };

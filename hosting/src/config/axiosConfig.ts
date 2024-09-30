@@ -3,8 +3,9 @@ import axios from "axios";
 let refreshingToken = false;
 let refreshSubcribers: any[] = [];
 
+// https://asia-southeast1-sendly-email-template-builder.cloudfunctions.net/sendly
 const instance = axios.create({
-  baseURL: `https://asia-southeast1-sendly-email-template-builder.cloudfunctions.net/sendly/api`,
+  baseURL: `/api`,
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
@@ -53,6 +54,7 @@ export const refreshAccessToken = async () => {
 
 const onRrefreshed = (token: string) => {
   refreshSubcribers.map((cb) => cb(token));
+  refreshSubcribers = [];
 };
 
 const subscribeTokenRefresh = (cb: any) => {
@@ -72,18 +74,24 @@ instance.interceptors.response.use(
       if (!refreshingToken) {
         refreshingToken = true;
         try {
-          const newToken = await refreshAccessToken();
-          if (newToken) {
-            onRrefreshed(newToken);
-            refreshingToken = false;
-          } else {
-            // If refresh token is invalid, user must log in again
-            localStorage.clear();
-            window.location.href = "/login";
-            return Promise.reject(error);
-          }
+          refreshAccessToken()
+            .then((newToken) => {
+              if (newToken) {
+                onRrefreshed(newToken);
+                refreshingToken = false;
+              } else {
+                // If refresh token is invalid, user must log in again
+                localStorage.clear();
+                window.location.href = "/login";
+                return Promise.reject(new Error("Invalid refresh token"));
+              }
+            })
+            .catch((error) => {
+              console.error("Error refreshing token:", error);
+              // Additional error handling if needed
+            });
         } catch (err) {
-          // Something went wrong during token refresh, force logout
+          // Failed to token refresh, force logout
           refreshingToken = false;
           localStorage.clear();
           window.location.href = "/login";
