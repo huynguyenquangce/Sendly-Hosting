@@ -17,6 +17,7 @@
     "@reduxjs/toolkit": "^2.2.7",
     "@shopify/polaris": "^13.6.0",
     "axios": "^1.7.2",
+    "axios-auth-refresh": "^3.3.6",
     "firebase": "^10.12.2",
     "i18next": "^23.15.1",
     "js-cookie": "^3.0.5",

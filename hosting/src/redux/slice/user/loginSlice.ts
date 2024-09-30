@@ -1,13 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosConfig from "../../../config/axiosConfig";
-// import axios from "axios";
 interface LoginState {
   loading: boolean;
   error: boolean;
   errorMessage: string | null;
   isLoggined: boolean;
-  accessToken: string | null;
-  refreshToken: string | null;
   userId: string | null;
 }
 
@@ -16,8 +13,6 @@ const initialState: LoginState = {
   error: false,
   errorMessage: null,
   isLoggined: false,
-  accessToken: "",
-  refreshToken: "",
   userId: "",
 };
 
@@ -47,10 +42,7 @@ const loginSlice = createSlice({
       state.error = false;
       state.errorMessage = null;
       state.isLoggined = false;
-    },
-    updateAccessToken: (state, action) => {
-      state.accessToken = action.payload;
-      state.isLoggined = true;
+      state.userId = "";
     },
   },
   extraReducers: (builder) => {
@@ -64,8 +56,6 @@ const loginSlice = createSlice({
       state.loading = false;
       state.error = false;
       state.isLoggined = true;
-      state.accessToken = action.payload.data.access_token;
-      state.refreshToken = action.payload.data.refresh_token;
       state.userId = action.payload.data.user.userID;
     });
 
@@ -76,5 +66,5 @@ const loginSlice = createSlice({
     });
   },
 });
-export const { resetLogin, updateAccessToken } = loginSlice.actions;
+export const { resetLogin } = loginSlice.actions;
 export default loginSlice.reducer;
