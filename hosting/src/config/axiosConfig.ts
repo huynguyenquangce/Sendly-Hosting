@@ -5,7 +5,7 @@ let refreshSubcribers: any[] = [];
 
 // https://asia-southeast1-sendly-email-template-builder.cloudfunctions.net/sendly
 const instance = axios.create({
-  baseURL: `/api`,
+  baseURL: `https://asia-southeast1-sendly-email-template-builder.cloudfunctions.net/sendly/api`,
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
@@ -82,6 +82,7 @@ instance.interceptors.response.use(
               } else {
                 // If refresh token is invalid, user must log in again
                 localStorage.clear();
+                sessionStorage.clear();
                 window.location.href = "/login";
                 return Promise.reject(new Error("Invalid refresh token"));
               }
@@ -94,6 +95,7 @@ instance.interceptors.response.use(
           // Failed to token refresh, force logout
           refreshingToken = false;
           localStorage.clear();
+          sessionStorage.clear();
           window.location.href = "/login";
           return Promise.reject(error);
         }
@@ -110,6 +112,7 @@ instance.interceptors.response.use(
     } else if (status === 401 && config.url?.includes("/auth/refresh")) {
       // If status 401 when refresh the token, force login
       localStorage.clear();
+      sessionStorage.clear();
       window.location.href = "/login";
       return Promise.reject(error);
     } else {

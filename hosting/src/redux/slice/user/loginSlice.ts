@@ -5,7 +5,6 @@ interface LoginState {
   error: boolean;
   errorMessage: string | null;
   isLoggined: boolean;
-  userId: string | null;
 }
 
 const initialState: LoginState = {
@@ -13,7 +12,6 @@ const initialState: LoginState = {
   error: false,
   errorMessage: null,
   isLoggined: false,
-  userId: "",
 };
 
 export const LoginUser = createAsyncThunk(
@@ -42,7 +40,6 @@ const loginSlice = createSlice({
       state.error = false;
       state.errorMessage = null;
       state.isLoggined = false;
-      state.userId = "";
     },
   },
   extraReducers: (builder) => {
@@ -56,7 +53,6 @@ const loginSlice = createSlice({
       state.loading = false;
       state.error = false;
       state.isLoggined = true;
-      state.userId = action.payload.data.user.userID;
     });
 
     builder.addCase(LoginUser.rejected, (state, action) => {

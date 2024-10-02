@@ -19,6 +19,7 @@ import { useTranslation } from "react-i18next";
 import { changeLanguage } from "../../redux/slice/app/languageSlice";
 import { resetLogin } from "../../redux/slice/user/loginSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { persistor } from "../../redux/store";
 import type { RootState } from "../../redux/store";
 const ResponsiveAppBar = () => {
   const { t } = useTranslation();
@@ -39,9 +40,10 @@ const ResponsiveAppBar = () => {
 
   const handleNavigation = async (path: string) => {
     if (path === "/logout") {
-      await localStorage.clear();
       await dispatch(resetLogin());
-      navigate("/login");
+      persistor.purge();
+      localStorage.clear();
+      setTimeout(() => navigate("/login"), 1500);
     } else {
       navigate(path);
       handleMenuClose();

@@ -6,7 +6,7 @@ import rootReducer from "./reducers/rootReducer";
 const persistConfig = {
   key: "root", // Key dùng để lưu state trong storage
   storage, // Loại storage (localStorage)
-  whitelist: ["user"], // Chỉ định reducer nào sẽ được lưu trữ, ví dụ: 'user'
+  whitelist: ["user", "admin"], // Chỉ định reducer nào sẽ được lưu trữ, ví dụ: 'user'
 };
 
 // Tạo persisted reducer

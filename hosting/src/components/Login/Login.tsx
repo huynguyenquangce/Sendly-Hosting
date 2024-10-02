@@ -28,13 +28,10 @@ const Login = () => {
       const response = (await dispatch(
         LoginUser(loginObject)
       )) as LoginResponse;
-      console.log("check response", response);
       if (response && response.payload) {
         const access_token = response.payload.data?.access_token;
         const refresh_token = response.payload.data?.refresh_token;
         if (access_token && refresh_token) {
-          console.log(access_token, "check access_token");
-          console.log(refresh_token, " check refresh_token");
           localStorage.setItem("access_token", access_token);
           localStorage.setItem("refresh_token", refresh_token);
         } else {
