@@ -8,8 +8,9 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
+import { InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { RadioSetting, RangeSetting, SelectSetting } from "./SettingsType";
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -24,18 +25,45 @@ const style = {
 };
 
 const Section = () => {
+  ////////////////////////////////////////////////////////////
+
+  const [rangeSetting, setRangeSetting] = useState({});
+  const [radioSetting, setRadioSetting] = useState({});
+  const [selectSetting, setSelectSetting] = useState({});
+  const callbackFunction = (childData: any, field: string) => {
+    switch (field) {
+      case "range":
+        setRangeSetting(childData);
+        break;
+      case "select":
+        setSelectSetting(childData);
+        break;
+      case "radio":
+        setRadioSetting(childData);
+        break;
+      default:
+        break;
+    }
+  };
+
+  useEffect(() => {
+    console.log("check range Settings", rangeSetting);
+  }),
+    [rangeSetting];
+
+  ////////////////////////////////////////////////////////////
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [open, setOpen] = useState(false);
   const [settings, setSettings] = useState([
-    { id: "", type: "", label: "", value: "" },
+    { id: "", type: "", label: "", default: "" },
   ]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const handleAddSetting = () => {
-    setSettings([...settings, { id: "", type: "", label: "", value: "" }]);
+    setSettings([...settings, { id: "", type: "", label: "", default: "" }]);
   };
 
   // Update state for settings form base on index
@@ -47,23 +75,30 @@ const Section = () => {
 
   // Handle submit form
   const handleSubmit = () => {
+    const standardSetting = { ...settings, ...rangeSetting };
     const objectCreate = {
       title: title,
       subtitle: subtitle,
-      settings: settings,
+      settings: standardSetting,
     };
+    console.log("check standardSetting", rangeSetting);
     console.log(objectCreate, "check create Object");
     setTitle("");
     setSubtitle("");
-    setSettings([{ id: "", type: "", label: "", value: "" }]);
+    setSettings([{ id: "", type: "", label: "", default: "" }]);
     setOpen(false);
   };
 
   const onClearAllSettings = () => {
     setTitle("");
     setSubtitle("");
-    setSettings([{ id: "", type: "", label: "", value: "" }]);
+    setSettings([{ id: "", type: "", label: "", default: "" }]);
   };
+
+  const handleChangeType = (index: number, event: SelectChangeEvent) => {
+    handleSettingChange(index, "type", event.target.value as string);
+  };
+
   return (
     <div>
       <Button
@@ -138,16 +173,25 @@ const Section = () => {
                           handleSettingChange(index, "id", e.target.value)
                         }
                       />
+                      <FormControl fullWidth sx={{ marginTop: 2 }}>
+                        <InputLabel id="type_id">Type</InputLabel>
+                        <Select
+                          labelId="type_id"
+                          value={setting.type}
+                          label="Type"
+                          onChange={(e) => handleChangeType(index, e)}
+                        >
+                          <MenuItem value="checkbox">Checkbox</MenuItem>
+                          <MenuItem value="number">Number</MenuItem>
+                          <MenuItem value="radio">Radio</MenuItem>
+                          <MenuItem value="range">Range</MenuItem>
+                          <MenuItem value="select">Select</MenuItem>
+                          <MenuItem value="text">Text</MenuItem>
+                          <MenuItem value="textarea">TextArea</MenuItem>
+                        </Select>
+                      </FormControl>
                       <TextField
-                        label="Type"
-                        value={setting.type}
-                        onChange={(e) =>
-                          handleSettingChange(index, "type", e.target.value)
-                        }
-                        fullWidth
-                        margin="normal"
-                      />
-                      <TextField
+                        sx={{ marginTop: 2 }}
                         label="Label"
                         value={setting.label}
                         onChange={(e) =>
@@ -157,14 +201,28 @@ const Section = () => {
                         margin="normal"
                       />
                       <TextField
+                        sx={{ marginTop: 2 }}
                         label="Value"
-                        value={setting.value}
+                        value={setting.default}
                         onChange={(e) =>
-                          handleSettingChange(index, "value", e.target.value)
+                          handleSettingChange(index, "default", e.target.value)
                         }
                         fullWidth
                         margin="normal"
                       />
+
+                      {setting.type === "radio" && (
+                        <RadioSetting></RadioSetting>
+                      )}
+                      {setting.type === "range" && (
+                        <RangeSetting
+                          setting={setting}
+                          parentCallback={callbackFunction}
+                        ></RangeSetting>
+                      )}
+                      {setting.type === "select" && (
+                        <SelectSetting></SelectSetting>
+                      )}
                     </CardContent>
                   </Card>
                 ))}
