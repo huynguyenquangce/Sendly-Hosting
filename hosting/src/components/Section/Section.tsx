@@ -10,7 +10,8 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import { useEffect, useState } from "react";
 import { InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
-import { RadioSetting, RangeSetting, SelectSetting } from "./SettingsType";
+import { RadioSetting, RangeSetting, SelectSetting } from "./SettingsComponent";
+
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -24,49 +25,65 @@ const style = {
   borderRadius: 2,
 };
 
-const Section = () => {
-  ////////////////////////////////////////////////////////////
+// Define the type for the settings
+type Setting = {
+  id: string;
+  type: string;
+  label: string;
+  default: string;
+  extra?: any;
+};
 
-  const [rangeSetting, setRangeSetting] = useState({});
-  const [radioSetting, setRadioSetting] = useState({});
-  const [selectSetting, setSelectSetting] = useState({});
-  const callbackFunction = (childData: any, field: string) => {
+const Section = () => {
+  // State variables
+
+  const [title, setTitle] = useState("");
+  const [subtitle, setSubtitle] = useState("");
+  const [open, setOpen] = useState(false);
+  const [settings, setSettings] = useState<Setting[]>([
+    { id: "", type: "", label: "", default: "", extra: {} },
+  ]);
+
+  // Callback function to handle child data updates
+  const callbackFunction = (childData: any, field: string, index: number) => {
+    const updatedSettings = [...settings];
     switch (field) {
       case "range":
-        setRangeSetting(childData);
+        updatedSettings[index] = {
+          ...updatedSettings[index],
+          extra: { ...updatedSettings[index].extra, ...childData },
+        };
+        setSettings(updatedSettings);
         break;
       case "select":
-        setSelectSetting(childData);
+        updatedSettings[index].extra = {
+          ...updatedSettings[index].extra,
+          ...childData,
+        }; // Handle select
+        setSettings(updatedSettings);
         break;
       case "radio":
-        setRadioSetting(childData);
+        updatedSettings[index].extra = {
+          ...updatedSettings[index].extra,
+          ...childData,
+        }; // Handle radio
+        setSettings(updatedSettings);
         break;
       default:
         break;
     }
   };
 
-  useEffect(() => {
-    console.log("check range Settings", rangeSetting);
-  }),
-    [rangeSetting];
-
-  ////////////////////////////////////////////////////////////
-  const [title, setTitle] = useState("");
-  const [subtitle, setSubtitle] = useState("");
-  const [open, setOpen] = useState(false);
-  const [settings, setSettings] = useState([
-    { id: "", type: "", label: "", default: "" },
-  ]);
-
+  // Modal control functions
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  // Add a new setting
   const handleAddSetting = () => {
     setSettings([...settings, { id: "", type: "", label: "", default: "" }]);
   };
 
-  // Update state for settings form base on index
+  // Update state for settings form based on index
   const handleSettingChange = (index: number, field: string, value: string) => {
     const updatedSettings = [...settings];
     updatedSettings[index] = { ...updatedSettings[index], [field]: value };
@@ -75,32 +92,29 @@ const Section = () => {
 
   // Handle submit form
   const handleSubmit = () => {
-    const standardSetting = { ...settings, ...rangeSetting };
-    const objectCreate = {
-      title: title,
-      subtitle: subtitle,
-      settings: standardSetting,
-    };
-    console.log("check standardSetting", rangeSetting);
-    console.log(objectCreate, "check create Object");
+    const createObject = { settings, subtitle, title };
+    console.log("check setting", createObject);
     setTitle("");
     setSubtitle("");
     setSettings([{ id: "", type: "", label: "", default: "" }]);
     setOpen(false);
   };
 
+  // Clear all settings
   const onClearAllSettings = () => {
     setTitle("");
     setSubtitle("");
     setSettings([{ id: "", type: "", label: "", default: "" }]);
   };
 
+  // Handle change of setting type
   const handleChangeType = (index: number, event: SelectChangeEvent) => {
     handleSettingChange(index, "type", event.target.value as string);
   };
 
   return (
     <div>
+      {/* Button to open the modal */}
       <Button
         onClick={handleOpen}
         sx={{ marginTop: 10, marginLeft: 50 }}
@@ -108,6 +122,8 @@ const Section = () => {
       >
         Create New Section
       </Button>
+
+      {/* Modal for section settings */}
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -121,7 +137,11 @@ const Section = () => {
               <Typography variant="h6" sx={{ mb: 2 }}>
                 Section Settings
               </Typography>
+
+              {/* Clear all settings button */}
               <Button onClick={onClearAllSettings}>Clear all Settings</Button>
+
+              {/* Title and subtitle fields */}
               <TextField
                 label="Title"
                 placeholder="Section Title"
@@ -138,6 +158,8 @@ const Section = () => {
                 value={subtitle}
                 onChange={(e) => setSubtitle(e.target.value)}
               />
+
+              {/* Settings list */}
               <Box
                 sx={{
                   maxHeight: 250,
@@ -164,6 +186,8 @@ const Section = () => {
                         Setting {index + 1}
                       </Typography>
                       <Divider sx={{ mb: 2 }} />
+
+                      {/* Setting ID input */}
                       <TextField
                         label="ID"
                         value={setting.id}
@@ -173,6 +197,8 @@ const Section = () => {
                           handleSettingChange(index, "id", e.target.value)
                         }
                       />
+
+                      {/* Setting type selector */}
                       <FormControl fullWidth sx={{ marginTop: 2 }}>
                         <InputLabel id="type_id">Type</InputLabel>
                         <Select
@@ -190,6 +216,8 @@ const Section = () => {
                           <MenuItem value="textarea">TextArea</MenuItem>
                         </Select>
                       </FormControl>
+
+                      {/* Setting label input */}
                       <TextField
                         sx={{ marginTop: 2 }}
                         label="Label"
@@ -200,6 +228,8 @@ const Section = () => {
                         fullWidth
                         margin="normal"
                       />
+
+                      {/* Setting default value input */}
                       <TextField
                         sx={{ marginTop: 2 }}
                         label="Value"
@@ -211,13 +241,17 @@ const Section = () => {
                         margin="normal"
                       />
 
+                      {/* Render additional components based on setting type */}
                       {setting.type === "radio" && (
-                        <RadioSetting></RadioSetting>
+                        <RadioSetting
+                          parentCallback={callbackFunction}
+                          settingIndex={index}
+                        ></RadioSetting>
                       )}
                       {setting.type === "range" && (
                         <RangeSetting
-                          setting={setting}
                           parentCallback={callbackFunction}
+                          settingIndex={index}
                         ></RangeSetting>
                       )}
                       {setting.type === "select" && (
@@ -227,6 +261,7 @@ const Section = () => {
                   </Card>
                 ))}
               </Box>
+
               {/* Button for adding settings */}
               <Button
                 onClick={handleAddSetting}
@@ -237,7 +272,7 @@ const Section = () => {
                 Add Setting
               </Button>
 
-              {/* Button Submit */}
+              {/* Button for submitting settings */}
               <Button
                 onClick={handleSubmit}
                 variant="outlined"
