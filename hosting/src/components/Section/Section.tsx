@@ -255,7 +255,10 @@ const Section = () => {
                         ></RangeSetting>
                       )}
                       {setting.type === "select" && (
-                        <SelectSetting></SelectSetting>
+                        <SelectSetting
+                          parentCallback={callbackFunction}
+                          settingIndex={index}
+                        ></SelectSetting>
                       )}
                     </CardContent>
                   </Card>
