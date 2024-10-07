@@ -148,19 +148,6 @@ const RadioSetting: React.FC<RadioSettingProps> = (props) => {
     </div>
   );
 };
-// const SelectSetting = () => {
-//   return (
-//     <>
-//       <TextField
-//         sx={{ marginTop: 2 }}
-//         label="Options"
-//         value={1}
-//         fullWidth
-//         placeholder="Comma-separated values"
-//       />
-//     </>
-//   );
-// };
 
 interface SelectSettingProps {
   settingIndex: number;

@@ -11,6 +11,9 @@ import Divider from "@mui/material/Divider";
 import { useEffect, useState } from "react";
 import { InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { RadioSetting, RangeSetting, SelectSetting } from "./SettingsComponent";
+import { useDispatch, useSelector } from "react-redux";
+import { getSection } from "../../redux/slice/app/sectionSlice";
+import { AppDispatch, RootState } from "../../redux/store";
 
 const style = {
   position: "absolute" as "absolute",
@@ -35,14 +38,23 @@ type Setting = {
 };
 
 const Section = () => {
+  // redux
+  const dispatch = useDispatch<AppDispatch>();
+  const listSection = useSelector(
+    (state: RootState) => state.app.section.listSection
+  );
   // State variables
-
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [open, setOpen] = useState(false);
   const [settings, setSettings] = useState<Setting[]>([
     { id: "", type: "", label: "", default: "", extra: {} },
   ]);
+
+  useEffect(() => {
+    dispatch(getSection());
+  }, [dispatch]);
+  console.log(listSection, "check response section list");
 
   // Callback function to handle child data updates
   const callbackFunction = (childData: any, field: string, index: number) => {
@@ -122,7 +134,12 @@ const Section = () => {
       >
         Create New Section
       </Button>
-
+      {/* List Section  */}
+      {listSection.data.sections.map((section: any, index: number) => (
+        <Box key={index} sx={{ display: "flex", gap: 2, marginBottom: 2 }}>
+          <div>{section.title} </div>
+        </Box>
+      ))}
       {/* Modal for section settings */}
       <Modal
         aria-labelledby="transition-modal-title"
